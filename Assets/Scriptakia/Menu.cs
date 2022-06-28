@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
     public void Load_1stLevel()
     {
         Destroy(FindObjectOfType<ScenePersistController>().gameObject);
+        Debug.Log("D");
         SceneManager.LoadScene(1);
     }
     

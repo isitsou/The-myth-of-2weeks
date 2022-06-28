@@ -69,7 +69,7 @@ TextureImporter:
       213: -8504409732566498597
     second: Decorations (32x32)_21
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -89,6 +89,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -98,8 +100,8 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -120,9 +122,13 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -639,6 +645,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Decorations (32x32)_6: 6294808281560137798
+      Decorations (32x32)_14: 3018965250298252140
+      Decorations (32x32)_19: -4128507501379397986
+      Decorations (32x32)_21: -8504409732566498597
+      Decorations (32x32)_1: 4600129511770090565
+      Decorations (32x32)_2: -399538571583186172
+      Decorations (32x32)_5: -8255700023269317997
+      Decorations (32x32)_15: -4111354732051323565
+      Decorations (32x32)_0: -8605479602969983287
+      Decorations (32x32)_9: 144703468013308536
+      Decorations (32x32)_3: 3406356269320503256
+      Decorations (32x32)_10: 7417954762047746310
+      Decorations (32x32)_12: -7087685091449271119
+      Decorations (32x32)_16: -218676679752899399
+      Decorations (32x32)_18: -2037447976504338380
+      Decorations (32x32)_4: -1075017349056126811
+      Decorations (32x32)_13: -5039852512312098757
+      Decorations (32x32)_8: -59366793427181878
+      Decorations (32x32)_11: -328086744496294525
+      Decorations (32x32)_17: 810535612993806456
+      Decorations (32x32)_7: 6989189372938095363
+      Decorations (32x32)_20: 8711389345169685912
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

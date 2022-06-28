@@ -22,6 +22,14 @@ public class StaticBombSilent : MonoBehaviour
             ANIM.SetTrigger("TouchedPlayer");
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Aura"))
+        {
+            ANIM.SetTrigger("TouchedPlayer");
+        }
+    }
     private void AfterKaboom()
     {
         Destroy(gameObject);

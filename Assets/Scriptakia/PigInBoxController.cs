@@ -15,7 +15,7 @@ public class PigInBoxController : MonoBehaviour
     [SerializeField] float raycastDistance = 10f;
 
     //Vars
-    private float direction = -1f;    
+    private float direction = -1f;
     private bool iHaveVision = false;
     private RaycastHit2D hit;
 
@@ -34,8 +34,6 @@ public class PigInBoxController : MonoBehaviour
     {
         //check for vision
         Vision();
-
-
     }
     private void ThrowBox()
     {
@@ -52,11 +50,18 @@ public class PigInBoxController : MonoBehaviour
         {
             //CAST RAY
             Debug.DrawRay(transform.position, new Vector3(direction * raycastDistance, 0, 0), Color.green);
-            hit = Physics2D.Raycast(transform.position, new Vector2(direction, 0), raycastDistance, LayerMask.GetMask("Player","Foreground"));
-            //check if you hit anything
-            if (hit.collider.gameObject.name == "Player")
+            hit = Physics2D.Raycast(transform.position, new Vector2(direction, 0), raycastDistance, LayerMask.GetMask("Player", "Foreground"));
+
+            if (hit)
             {
-                ANIM.SetBool("SawPlayer", true);
+                if (hit.collider.gameObject.name == "Player")
+                {
+                    ANIM.SetBool("SawPlayer", true);
+                }
+                else
+                {
+                    ANIM.SetBool("SawPlayer", false);
+                }
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,15 +17,32 @@ public class Player : MonoBehaviour
     //Vars
     private float velX, velY;
     private bool isAlive = true, soundFlag = true;
+    LayerMask deathStuff;
 
     //Public Vars
     [SerializeField] float x_velocityModifier = 5f;
     [SerializeField] float jumpModifier = 13.2f;
     [SerializeField] float verticalClimbVelocityModifier = 3.5f;
     [SerializeField] float horizontalClimbVelocityModifier = 0.5f;
+    [SerializeField] GameObject aura;
     //[SerializeField] float deathPushingPower = 3f;
-    [SerializeField] AudioClip runSound=null;
-    [SerializeField] AudioClip jumpSound=null;
+    [SerializeField] AudioClip runSound = null;
+    [SerializeField] AudioClip jumpSound = null;
+    private bool canShoot = false;
+    private bool canTakeDamage_DEBUG = true;
+
+    private bool CanShoot
+    {
+        get { return canShoot; }
+        set
+        {
+            if (value == true && canShoot == false)
+            {
+                if (ANIM != null) ANIM.SetTrigger("HammerTime");
+            }
+            canShoot = value;
+        }
+    }
 
 
 
@@ -36,23 +54,40 @@ public class Player : MonoBehaviour
         CAPSULE_COLLI = GetComponent<CapsuleCollider2D>();
         POLYG_COLLI = GetComponent<PolygonCollider2D>();
         BOX_CLIMB_COLLI = GetComponent<BoxCollider2D>();
-        MY_AUDIOSOURCE = GetComponent<AudioSource>();
+        MY_AUDIOSOURCE = GetComponent<AudioSource>();       
+        deathStuff = LayerMask.GetMask("Enemies", "Hazards");
     }
 
 
     void Update()
     {
-        //check if player is alive
-        if (!isAlive)
-        {
-            return;
-        }
+        //Debug
+        if (Input.GetKeyDown(KeyCode.L)) canTakeDamage_DEBUG = !canTakeDamage_DEBUG;
 
-        Death();
+        //check if player is alive
+        if (!isAlive) return;
+        if(canTakeDamage_DEBUG) Death();
+        if (!isAlive) return;
+
         Run();
         Jump();
         ClimbLadder();
-        print(RB.velocity.y);
+        Attack();
+    }
+
+    private void Attack()
+    {
+        bool playerIsTouchingLadder = POLYG_COLLI.IsTouchingLayers(LayerMask.GetMask("Ladders"));
+
+        if (Input.GetMouseButtonDown(1) && canShoot && !playerIsTouchingLadder)
+        {
+            ANIM.SetTrigger("Attack");
+            GameSessionController.instance.SubDiamonds(3);
+
+            Transform auraTemp = Instantiate(aura, transform.GetChild(0).position, Quaternion.identity).transform;
+            auraTemp.localScale = new Vector3(transform.localScale.x * auraTemp.localScale.x, auraTemp.localScale.y, 1);
+            auraTemp.GetComponent<Aura>().direction = transform.localScale.x;
+        }
     }
 
     private void Run()
@@ -60,7 +95,7 @@ public class Player : MonoBehaviour
         //INPUT
         //velX = Input.GetAxis("Horizontal"); //smooth movement
         velX = Input.GetAxisRaw("Horizontal"); //snappy movement
-        
+
 
         //Horizontal Movement
         RB.velocity = new Vector2(velX * x_velocityModifier, RB.velocity.y);
@@ -109,7 +144,7 @@ public class Player : MonoBehaviour
         {
             //Add jump velocity
             Vector2 jumpspeed = new Vector2(0, jumpModifier);
-            RB.velocity = RB.velocity + jumpspeed;            
+            RB.velocity = RB.velocity + jumpspeed;
             ANIM.SetBool("IsJumping", true);
             AudioSource.PlayClipAtPoint(jumpSound, transform.position, 0.02f);
 
@@ -119,7 +154,7 @@ public class Player : MonoBehaviour
         if (RB.velocity.y < -0.01f)
         {
             ANIM.SetBool("IsJumping", false);
-            ANIM.SetBool("IsFalling", true);            
+            ANIM.SetBool("IsFalling", true);
         }
         else
         {
@@ -167,12 +202,12 @@ public class Player : MonoBehaviour
     //Death related stuff
     private void Death()
     {
+        
         //if one of the colliders on the player touches another collider on layer Enemies or Hazards then Die
-        if (CAPSULE_COLLI.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")) || POLYG_COLLI.IsTouchingLayers(LayerMask.GetMask("Hazards")) || BOX_CLIMB_COLLI.IsTouchingLayers(LayerMask.GetMask("Hazards","Enemies")))
+        if (CAPSULE_COLLI.IsTouchingLayers(deathStuff) || POLYG_COLLI.IsTouchingLayers(deathStuff) || BOX_CLIMB_COLLI.IsTouchingLayers(deathStuff))
         {
             //disable colliders
-            POLYG_COLLI.enabled = false;            
-            transform.GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
+            POLYG_COLLI.enabled = false;
 
             /*push player 
             Vector2 deathPush = new Vector2(0f, deathPushingPower);
@@ -196,4 +231,8 @@ public class Player : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void CheckDiamonds(bool diamondsAreEnough)
+    {
+        CanShoot = diamondsAreEnough;
+    }
 }
