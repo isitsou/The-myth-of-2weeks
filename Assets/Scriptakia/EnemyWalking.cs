@@ -52,7 +52,7 @@ public class EnemyWalking : MonoBehaviour
         MY_AUDIOSOURCE.Stop();
 
         //flip
-        transform.localScale = new Vector3(-Mathf.Sign(RB.velocity.x), 1, 1);
+        transform.localScale = new Vector3(-Mathf.Sign(RB.linearVelocity.x), 1, 1);
     }
     private void Run()
     {
@@ -62,11 +62,11 @@ public class EnemyWalking : MonoBehaviour
         //run accordingly to flip()
         if (transform.localScale.x > 0)
         {
-            RB.velocity = new Vector2(horizontalVelocity, 0);
+            RB.linearVelocity = new Vector2(horizontalVelocity, 0);
         }
         else
         {
-            RB.velocity = new Vector2(-horizontalVelocity, 0);
+            RB.linearVelocity = new Vector2(-horizontalVelocity, 0);
         }
     }
     private void Stay()
@@ -74,7 +74,7 @@ public class EnemyWalking : MonoBehaviour
 
         //Play idle animation
         ANIM.SetBool("IsRunning", false);
-        RB.velocity = Vector2.zero;
+        RB.linearVelocity = Vector2.zero;
 
 
         //wait for 5 seconds

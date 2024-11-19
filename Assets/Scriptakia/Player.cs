@@ -98,10 +98,10 @@ public class Player : MonoBehaviour
 
 
         //Horizontal Movement
-        RB.velocity = new Vector2(velX * x_velocityModifier, RB.velocity.y);
+        RB.linearVelocity = new Vector2(velX * x_velocityModifier, RB.linearVelocity.y);
 
         //Flip accordingly && running anims
-        if (Mathf.Abs(RB.velocity.x) > Mathf.Epsilon && POLYG_COLLI.IsTouchingLayers(LayerMask.GetMask("Foreground")))
+        if (Mathf.Abs(RB.linearVelocity.x) > Mathf.Epsilon && POLYG_COLLI.IsTouchingLayers(LayerMask.GetMask("Foreground")))
         {
             //play running anims because we have velocityX greater than something small and touching platform
             ANIM.SetBool("Running", true);
@@ -144,14 +144,14 @@ public class Player : MonoBehaviour
         {
             //Add jump velocity
             Vector2 jumpspeed = new Vector2(0, jumpModifier);
-            RB.velocity = RB.velocity + jumpspeed;
+            RB.linearVelocity = RB.linearVelocity + jumpspeed;
             ANIM.SetBool("IsJumping", true);
             AudioSource.PlayClipAtPoint(jumpSound, transform.position, 0.02f);
 
         }
 
         //Set anims for falling, not falling and not jumping
-        if (RB.velocity.y < -0.01f)
+        if (RB.linearVelocity.y < -0.01f)
         {
             ANIM.SetBool("IsJumping", false);
             ANIM.SetBool("IsFalling", true);
@@ -178,10 +178,10 @@ public class Player : MonoBehaviour
             velY = Input.GetAxis("Vertical");
 
             //Add vertical velocity
-            RB.velocity = new Vector2(RB.velocity.x * horizontalClimbVelocityModifier, velY * verticalClimbVelocityModifier);
+            RB.linearVelocity = new Vector2(RB.linearVelocity.x * horizontalClimbVelocityModifier, velY * verticalClimbVelocityModifier);
 
             //Play Climbing OR Idle Anim according to velocity
-            if (Mathf.Abs(RB.velocity.y) > Mathf.Epsilon)
+            if (Mathf.Abs(RB.linearVelocity.y) > Mathf.Epsilon)
             {
                 ANIM.SetBool("Climbing", true);
             }
